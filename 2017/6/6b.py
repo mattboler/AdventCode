@@ -20,8 +20,6 @@ def iterate(mem_list):
     mem_list[index] = 0
     return distribute(mem_list, index, blocks)
 
-
-
 def main(argv):
     if len(sys.argv) == 1:
         with open('input.txt', 'r') as myfile:
