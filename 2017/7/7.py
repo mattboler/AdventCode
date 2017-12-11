@@ -26,7 +26,17 @@ def main(argv):
 # double for loop here: cs is the tuple from children, c is the children from the tuples
     root, = set(weight) - {c for cs in children.values() for c in cs}
     print(root)
+    
+    def total_weight(name):
+        sub = [total_weight(c) for c in children[name]]
+        if len(set(sub)) > 1:
+            (target, _), (failure, _) = collections.Counter(sub).most_common()
+            print(target-failure + weight[children[name][sub.index(failure)]])
+            return weight[name] + sum(sub)
+        return weight[name] + sum(sub)
 
-
+    print(total_weight(root))
 if __name__ == "__main__":
     main(sys.argv[1:])
+
+# This is garbage and I had to steal most of it beacuse I'm too dumb for this one.
