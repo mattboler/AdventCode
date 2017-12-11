@@ -52,14 +52,11 @@ def write_register(name, value, registers):
 # Process the instruction and change the registers accordingly
 
 def process_instruction(instruction, registers):
-# break instruction into pieces
     instruction_list = [string for string in instruction.split()]
 
-# check register to be acted on
     active_register = instruction_list[0]
     active_register_value = retreive_register(active_register, registers)
 
-# check condition and break if needed
     check_register = instruction_list[4]
     check_register_value = retreive_register(check_register, registers)
 
@@ -70,10 +67,6 @@ def process_instruction(instruction, registers):
             active_register_value -= int(instruction_list[2])
 
         write_register(active_register, active_register_value, registers)
-
-    
-
-
 
 def main(argv):
     filename = ''
@@ -87,11 +80,14 @@ def main(argv):
         data = myfile.read()
     
     register_dict = {}
+    max_vals = []
 
     for instruction in data.strip().splitlines():
         process_instruction(instruction, register_dict)
+        max_vals.append(max([i for i in register_dict.values()]))
 
-    print(max([i for i in register_dict.values()]))
+    print("Max val at end: " + str(max([i for i in register_dict.values()])))
+    print("Max val ever: " + str(max(max_vals)))
     
 
 if __name__ == "__main__":
