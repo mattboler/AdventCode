@@ -75,10 +75,10 @@ def main(argv):
         filename = 'input.txt'
     else:
         filename = 'test.txt'
-    
+
     with open(filename, 'r') as myfile:
         data = myfile.read()
-    
+
     register_dict = {}
     max_vals = []
 
@@ -88,7 +88,7 @@ def main(argv):
 
     print("Max val at end: " + str(max([i for i in register_dict.values()])))
     print("Max val ever: " + str(max(max_vals)))
-    
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
