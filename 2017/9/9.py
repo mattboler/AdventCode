@@ -50,6 +50,7 @@ def main(argv):
     for line in data.strip().splitlines():
         score = 0
         nest_depth = 0
+        garbage = 0
         # preprocess to remove ! and the character immediately after
         no_excl_string = re.sub(r'\!.', '', line)
         index = 0
@@ -57,6 +58,7 @@ def main(argv):
             if no_excl_string[index] == '<':
                 index += 1
                 while no_excl_string[index] != '>':
+                    garbage += 1
                     index += 1
             elif no_excl_string[index] == '{':
                 nest_depth += 1
@@ -67,6 +69,7 @@ def main(argv):
 
         # now count groups and points
         print(score)
+        print(garbage)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
