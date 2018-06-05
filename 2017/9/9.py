@@ -33,56 +33,7 @@
 # personal notes: input is taken in as one line.
 
 import sys
-
-class Stack:
-    def __init__(self):
-        self.items = []
-    def push(self, item):
-        self.items.append(item)
-    def pop(self):
-        return self.items.pop()
-    def isEmpty(self):
-        return self.items == []
-    def peek(self):
-        return self.items[len(self.items)-1]
-    def size(self):
-        return len(self.items)
-
-def remove_exclamations(str):
-    excl_ind = str.find('!')
-    if excl_ind == -1:
-        return str
-    else:
-        prefix = str[:excl_ind]
-        suffix = remove_exclamations(str[(excl_ind+2):])
-        return prefix + suffix
-
-def remove_garbage(str):
-    garbage_entry = str.find('<')
-    garbage_exit = str.find('>')
-    if garbage_entry == -1:
-        return str
-    else:
-        prefix = str[:garbage_entry]
-        suffix = str[(garbage_exit+1):]
-        return remove_garbage(prefix + suffix)
-
-def process_brackets(str, stack, val = None, sum = None):
-    if val == None:
-        val = 0
-    if sum == None:
-        sum = 0
-    if len(str) == 0:
-        return sum
-    else:
-        if str[0] == '{':
-            stack.push(val+1)
-            return process_brackets(str[1:], stack, val+1, sum)
-        elif str[0] == '}':
-            sum += stack.pop()
-            return process_brackets(str[1:], stack, val-1, sum)
-        else:
-            return process_brackets(str[1:], stack, val, sum)
+import re
 
 def main(argv):
     filename = ''
@@ -94,15 +45,28 @@ def main(argv):
     with open(filename, 'r') as myfile:
         data=myfile.read()
 
+
+
     for line in data.strip().splitlines():
-        # preprocess to remove !s and the character immediately after
-        no_excl_string = remove_exclamations(line)
-        # then remove everything between < and >
-        cleaned_string = remove_garbage(no_excl_string)
+        score = 0
+        nest_depth = 0
+        # preprocess to remove ! and the character immediately after
+        no_excl_string = re.sub(r'\!.', '', line)
+        index = 0
+        while index < len(no_excl_string):
+            if no_excl_string[index] == '<':
+                index += 1
+                while no_excl_string[index] != '>':
+                    index += 1
+            elif no_excl_string[index] == '{':
+                nest_depth += 1
+            elif no_excl_string[index] == '}':
+                score += nest_depth
+                nest_depth -= 1
+            index += 1
+
         # now count groups and points
-        s = Stack()
-        sum = process_brackets(cleaned_string, s)
-        print(sum)
+        print(score)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
