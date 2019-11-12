@@ -5,4 +5,4 @@
 
 2016: Julia
 
-2015: Scheme/CLisp/something functional
+2015: Scheme/CLisp/OCaml
