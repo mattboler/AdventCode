@@ -2,9 +2,8 @@
 
 INPUT_FILENAME = 'input.txt'
 
-if __name__ == '__main__':
+def part_1(filename):
     freq = 0
-
     with open(INPUT_FILENAME) as f:
         for line in f:
             """ The important thing here is the first character of the line
@@ -16,7 +15,11 @@ if __name__ == '__main__':
                 freq += magnitude
             else:
                 freq -= magnitude
+    return freq
 
+
+if __name__ == '__main__':
+    freq = part_1(INPUT_FILENAME)
     print("Frequency: ", freq)
 
 
